@@ -1,0 +1,18 @@
+dtmc
+
+module die
+
+	// local state
+	s : [0..2] init 0;
+	
+	[AP] s=0 -> 0.5 : (s'=0) + 0.25 : (s'=1) + 0.25 : (s'=2);
+	[AP] s=1 -> 0.9 : (s'=1) + 0.025 : (s'=0) + 0.075 : (s'=2);
+	[AP] s=2 -> 0.8 : (s'=2) + 0.05: (s'=0) + 0.15 : (s'=1);
+	
+endmodule
+
+
+// Aplicação de custos/recompençasss
+rewards "steps"
+	[AP]s=1 : 1;
+endrewards

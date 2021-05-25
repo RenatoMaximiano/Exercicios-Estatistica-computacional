@@ -1,0 +1,17 @@
+label "Stagnant" = (s=0);
+label "bull" = (s=1);
+label "bear" = (s=2);
+
+// What is the probability that two months after the analysis has started, we will
+// experience a bullish week (bull)?
+P=? [ F=8 "bull" ]
+
+filter(state, P>=0.80 [ true U=4 "Stagnant" ], "bear")
+
+filter(state, P=? [ true U=4 "Stagnant" ], "bear")
+
+// Calculate the probability of being in a bearish week (bear) after only one week.
+P=? [ true U=1 "bear" ]
+
+R=? [ C<=3 ]
+

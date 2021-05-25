@@ -1,0 +1,18 @@
+label "a" = (s=2|s=3);
+label "b" = (s=0|s=1|s=4|s=6);
+
+// Exercicio 1:
+// Questão b: Verificar se a ocorrencia de a eventualmete é maior do que 0.8, qual a sua probabilidade?
+P>=0.8 [ true U "a" ]
+P=? [ true U "a" ]
+// Questão c: Verificar se o modelo cumpre com a condição D|= P<0.55[bU<10a], qual a sua probabilidade?
+P<=0.55 [ ("b") U<=10 ("a") ]
+
+P=? [ ("b") U<=10 ("a") ]
+
+// Probabilidade de ocorrencia de Sat(a) e não Sat(b)?
+P=? [ X ("a"&!("b")) ]
+
+
+
+
