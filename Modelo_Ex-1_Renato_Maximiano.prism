@@ -1,0 +1,30 @@
+// Implemetação do modelo DTMC  //
+// Renato de Sousa Maximiano    //
+//V.1                           //
+/////////////////////////////////
+dtmc
+
+module die
+
+	// Primeiro é definido os estados do modelo o mesmo é inicializado em 0
+	s : [0..6] init 0;
+	// S0 pertence a Sat{b}, ligações de ida com S1 e S5
+	[b] s=0 -> 1/3 : (s'=1) + 2/3 : (s'=5);
+        // S1 pertence a Sat{b}, ligações de ida com S1 e S6
+	[b] s=1 -> 1/3 : (s'=1) + 2/3 : (s'=6);
+        // S2 pertence a Sat{a}, ligações de ida com S1 e S6
+	[a] s=2 -> 1/5 : (s'=1) + 4/5 : (s'=6);
+        // S3 pertence a Sat{a}, ligações de ida com S3 e S4
+	[a] s=3 -> 1/9 : (s'=3) + 8/9 : (s'=4);
+        // S4 pertence a Sat{b}, ligações de ida com S3
+	[b] s=4 -> 1.0 : (s'=3);
+        // S5 não pertence nem a Sat{a} nem a Sat{b}, ligações de ida com S0, S4 e S6
+	[n] s=5 -> 2/4 : (s'=0) + 1/4 : (s'=4) + 1/4 : (s'=6);
+        // S6 pertence a Sat{b}, ligações com S2 e S6
+	[b] s=6 -> 1/2 : (s'=2) + 1/2 : (s'=6);
+	
+endmodule
+
+rewards "cost"
+	true: 1;
+endrewards
