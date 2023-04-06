@@ -1,20 +1,23 @@
 import requests
 from bs4 import BeautifulSoup
 
-# Dados de entrada
-data_inicio = "01/01/2021"
-data_fim = "01/04/2023"
-valor = 1000
-
 # URL da página do Banco Central
-url = "https://www3.bcb.gov.br/CALCIDADAO/publico/exibirFormCorrecaoValores.do?method=exibirFormCorrecaoValores"
+url = 'https://www3.bcb.gov.br/CALCIDADAO/publico/exibirFormCorrecaoValores.do?method=exibirForm'
 
-# Fazer a requisição HTTP com os dados de entrada
-response = requests.post(url, data={"dataInicial": data_inicio, "dataFinal": data_fim, "valorCorrecao": valor})
+# Dados do formulário a serem enviados na requisição POST
+data = {
+    'aba': '1',
+    'selIndice': '4',  # código do índice INPC(IBGE)
+    'dataInicial': '01/2006',
+    'dataFinal': '01/2023',
+    'valorCorrecao': '1,23',
+}
 
-# Extrair o valor corrigido da resposta HTML
-soup = BeautifulSoup(response.content, "html.parser")
-valor_corrigido = soup.find("input", {"name": "valorCorrigido"}).get("value")
+# Envia uma requisição POST com os dados do formulário
+response = requests.post(url, data=data)
 
-# Exibir o valor corrigido
-print(f"Valor corrigido: R$ {valor_corrigido}")
+# Extrai o valor corrigido da página resultante
+soup = BeautifulSoup(response.content, 'html.parser')
+valor_corrigido = soup.find('span', {'class': 'valor'}).get_text()
+
+print(valor_corrigido)
