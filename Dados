@@ -1,11 +1,20 @@
-import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 
-url = 'https://www.ibge.gov.br/estatisticas/economicas/precos-e-custos/9256-indice-nacional-de-precos-ao-consumidor.html?=&t=downloads'
-response = requests.get(url)
+# Dados de entrada
+data_inicio = "01/01/2021"
+data_fim = "01/04/2023"
+valor = 1000
 
-if response.status_code != 200:
-    print('Erro ao baixar o arquivo')
+# URL da página do Banco Central
+url = "https://www3.bcb.gov.br/CALCIDADAO/publico/exibirFormCorrecaoValores.do?method=exibirFormCorrecaoValores"
 
-df = pd.read_csv(response.content, sep=';', skiprows=3, skipfooter=22, engine='python', decimal=',', thousands='.')
-print(df.head())
+# Fazer a requisição HTTP com os dados de entrada
+response = requests.post(url, data={"dataInicial": data_inicio, "dataFinal": data_fim, "valorCorrecao": valor})
+
+# Extrair o valor corrigido da resposta HTML
+soup = BeautifulSoup(response.content, "html.parser")
+valor_corrigido = soup.find("input", {"name": "valorCorrigido"}).get("value")
+
+# Exibir o valor corrigido
+print(f"Valor corrigido: R$ {valor_corrigido}")
